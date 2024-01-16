@@ -45,4 +45,23 @@ export class CategoryService {
       statusCode: 201,
     };
   }
+
+  async getCategories() {
+    const result = await this.categoryModel
+      .find()
+      .select({
+        _id: 1,
+        name: 1,
+      })
+      .populate({
+        path: 'createdBy',
+        model: 'Users',
+        select: 'username email _id role',
+      });
+    return {
+      data: result,
+      statusCode: 200,
+      message: 'Categories retrieved successfully',
+    };
+  }
 }
